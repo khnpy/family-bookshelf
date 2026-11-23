@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#faf6ef">
+<title>우리 가족 책장</title>
+<style>
+:root{--bg:#faf6ef;--card:#fff;--ink:#2b2622;--mute:#80776e;--line:#e8e0d3;--star:#efa72e;--btn:#292521;--btnink:#fff;color-scheme:light}
+@media(prefers-color-scheme:dark){:root{--bg:#1c1917;--card:#292524;--ink:#f4eee5;--mute:#b5aa9c;--line:#403932;--btn:#f4eee5;--btnink:#1c1917;color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif;line-height:1.5;padding:env(safe-area-inset-top,0px) 0 96px}
+button,input{font-family:inherit}button{cursor:pointer}button:disabled{opacity:.55;cursor:not-allowed}
+.wrap{max-width:560px;margin:auto;padding:18px 16px}h1{font-size:23px;margin:0 0 2px;letter-spacing:-.6px}
+.sub{font-size:13px;color:var(--mute);margin:0 0 8px}.status{font-size:12px;color:var(--mute);margin:0 0 16px;min-height:18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:17px;padding:16px;margin:0 0 11px}
+.setup h2{font-size:19px;margin:0 0 7px}.setup p{font-size:14px;color:var(--mute);margin:7px 0}
+.device-code{padding:13px;margin-top:10px;border:1px dashed var(--line);border-radius:11px;background:var(--bg);font-size:13px;overflow-wrap:anywhere;user-select:all;-webkit-user-select:all;line-height:1.5}
+.action{border:0;border-radius:12px;padding:11px 16px;background:var(--btn);color:var(--btnink);font-weight:650;font-size:14px;margin-top:10px}
+.hint{font-size:12px!important}.tabs{display:flex;gap:7px;overflow-x:auto;margin:2px 0 15px;padding-bottom:3px}
+.chip{white-space:nowrap;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:8px 14px;font-size:13px}
+.chip.on{background:var(--btn);color:var(--btnink);border-color:var(--btn)}
+.lbl{font-size:12px;font-weight:600;letter-spacing:.2px;color:var(--mute);margin:15px 0 8px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:8px}.name{font-weight:750;font-size:16px}
+.rank{display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;width:23px;height:23px;border-radius:99px;background:var(--bg);color:var(--mute);margin-right:5px}
+.cnt{font-size:13px;color:var(--mute);white-space:nowrap}.cnt b{font-size:19px;color:var(--ink)}
+.bar{height:9px;background:var(--line);border-radius:99px;overflow:hidden;margin:11px 0 6px}.bar i{height:100%;display:block;border-radius:99px;transition:width .35s}
+.pct{font-size:12px;color:var(--mute);display:flex;justify-content:space-between}.book{padding:12px 0;border-top:1px solid var(--line)}.book:first-child{padding-top:0;border-top:0}.book:last-child{padding-bottom:0}
+.bt{font-size:15px;font-weight:680;word-break:break-word}.meta{font-size:12px;color:var(--mute);display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-top:4px}
+.who{font-size:11px;color:white;border-radius:99px;padding:2px 7px}.rev{font-size:14px;margin-top:7px;white-space:pre-wrap;overflow-wrap:anywhere}
+.st{position:relative;display:inline-block;color:var(--line);letter-spacing:1px;font-size:14px;white-space:nowrap}.st i{position:absolute;left:0;top:0;overflow:hidden;color:var(--star);font-style:normal;white-space:nowrap}.rt{font-weight:750;color:var(--ink)}
+.edb,.del{border:0;background:none;font-size:12px;color:var(--mute);padding:3px 5px}.edb{margin-left:auto}.empty{text-align:center;color:var(--mute);font-size:14px;padding:30px 5px}
+.fab{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));background:var(--btn);color:var(--btnink);border:0;border-radius:99px;padding:14px 22px;font-size:15px;font-weight:700;box-shadow:0 6px 18px #0002}
+.ov{position:fixed;inset:0;background:#0008;display:none;align-items:flex-end;justify-content:center;z-index:20}.ov.show{display:flex}
+.sheet{width:100%;max-width:560px;background:var(--bg);border-radius:22px 22px 0 0;padding:19px 16px calc(19px + env(safe-area-inset-bottom,0px));max-height:94%;overflow:auto}.sheet h2{margin:0;font-size:19px}
+.field-label{font-size:12px;color:var(--mute);margin:13px 0 6px}
+input[type=text],input[type=date],input[type=number]{width:100%;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:11px;padding:12px;font-size:16px}
+.big{display:flex;align-items:center;justify-content:space-between;gap:9px}.go{width:100%;margin-top:16px;background:var(--btn);color:var(--btnink);border:0;border-radius:14px;padding:14px;font-size:16px;font-weight:700}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:90px;background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:11px;font-size:13px;max-width:90%;display:none;z-index:30}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>📚 우리 가족 책장</h1>
+  <p class="sub">2026년 독서 챌린지</p>
+  <div class="status" id="status" role="status">가족 책장에 연결하는 중…</div>
+  <section class="card setup" id="setup" hidden aria-live="polite">
+    <h2 id="setupTitle">기기 등록 대기 중</h2>
+    <p id="setupMessage">가족만 책장을 이용할 수 있도록 이 휴대폰을 한 번 승인해야 합니다.</p>
+    <div class="field-label">내 기기 ID (Firebase 익명 인증 UID)</div>
+    <div class="device-code" id="deviceId">연결 중…</div>
+    <button class="action" id="copyId" type="button">기기 ID 복사</button>
+    <p class="hint">가족 관리자가 Firebase → Firestore Database → 데이터 → <b>familyDevices</b>에서 이 ID로 문서를 만들고, <b>member</b> 문자열에 이름(다예/다인/금련/만식)을 입력하면 자동으로 책장이 열립니다.</p>
+  </section>
+  <div class="tabs" id="tabs" hidden></div>
+  <div id="main"><div class="empty">연결하는 중…</div></div>
+</div>
+<button class="fab" type="button" id="fab" hidden>＋ 책 기록</button>
+<div class="ov" id="ov" role="dialog" aria-modal="true" aria-labelledby="fh">
+  <div class="sheet">
+    <h2 id="fh">책 기록하기</h2>
+    <div class="field-label">책 제목</div>
+    <input type="text" id="ftitle" maxlength="80" placeholder="책 제목">
+    <div class="field-label">별점 (0~5점, 0.1점 단위)</div>
+    <div class="big"><span class="st" id="fst" style="font-size:24px"></span><input type="number" id="frate" inputmode="decimal" min="0" max="5" step="0.1" placeholder="0~5" style="width:100px;text-align:center;font-weight:800"></div>
+    <div class="field-label">읽은 날짜 (완독일)</div>
+    <input type="date" id="fdate">
+    <div class="field-label">한줄평</div>
+    <input type="text" id="frev" maxlength="100" placeholder="책을 읽고 느낀 점">
+    <button class="go" type="button" id="save">저장하기</button>
+    <button class="go" type="button" id="cancel" style="background:transparent;color:var(--mute);margin-top:4px">닫기</button>
+  </div>
+</div>
+<div class="toast" id="toast" role="status"></div>
+<script type="module">
+import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {getAuth,signInAnonymously,signOut} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import {getFirestore,collection,addDoc,updateDoc,deleteDoc,doc,onSnapshot} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+// Firebase 콘솔에서 발급받은 이 프로젝트의 웹앱 설정값
+const firebaseConfig = {
+  apiKey: "AIzaSyDc7mmUW52hUQ8_NyTqR234s1FJeoVywec",
+  authDomain: "family-bookshelf-574bf.firebaseapp.com",
+  projectId: "family-bookshelf-574bf",
+  storageBucket: "family-bookshelf-574bf.firebasestorage.app",
+  messagingSenderId: "563077789806",
+  appId: "1:563077789806:web:3665f76a17b88c01600e7f"
+};
+
+const YEAR=2026;
+const MEMBERS=[
+  {n:"금련",goal:52,c:"#e0527a"},
+  {n:"만식",goal:30,c:"#3b82f6"},
+  {n:"다인",goal:30,c:"#16a34a"},
+  {n:"다예",goal:30,c:"#9333ea"}
+];
+let books=[],tab="all",memberName=null,deviceUid="",editId="",unsubBooks=null;
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??"").replace(/[&<>\"]/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[ch]));
+const who=n=>MEMBERS.find(m=>m.n===n);
+const today=()=>{const d=new Date();return [d.getFullYear(),String(d.getMonth()+1).padStart(2,"0"),String(d.getDate()).padStart(2,"0")].join("-");};
+const count=n=>books.filter(b=>b.who===n&&String(b.date||"").startsWith(String(YEAR))).length;
+const pct=m=>Math.round(count(m.n)/m.goal*1000)/10;
+const stars=r=>'<span class="st"><i style="width:'+Math.min(100,Math.max(0,(+r||0)*20))+'%">★★★★★</i>★★★★★</span>';
+const status=t=>{$("status").textContent=t;};
+let toastTimer;
+function toast(t){const e=$("toast");clearTimeout(toastTimer);e.textContent=t;e.style.display="block";toastTimer=setTimeout(()=>e.style.display="none",3400);}
+function blockUI(message,title="기기 등록 대기 중"){
+  memberName=null;
+  if(unsubBooks){unsubBooks();unsubBooks=null;}
+  books=[];tab="all";
+  $("tabs").hidden=true;$("fab").hidden=true;$("ov").classList.remove("show");
+  $("setup").hidden=false;$("setupTitle").textContent=title;$("setupMessage").textContent=message;
+  $("deviceId").textContent=deviceUid||"기기 ID 생성 전";
+  $("copyId").disabled=!deviceUid;
+  $("main").innerHTML="";
+}
+function bookHTML(b,showWho){
+  const m=who(b.who)||{c:"#888"},owner=memberName===b.who;
+  return '<div class="book"><div class="bt">'+esc(b.title)+'</div><div class="meta">'+
+    (showWho?'<span class="who" style="background:'+m.c+'">'+esc(b.who)+'</span>':'')+
+    stars(b.rating)+'<span class="rt">'+Number(b.rating||0).toFixed(1)+'</span><span>'+esc(b.date)+'</span>'+
+    (owner?'<button class="edb" data-ed="'+esc(b.id)+'" type="button">수정</button><button class="del" data-del="'+esc(b.id)+'" type="button">삭제</button>':'')+
+    '</div>'+(b.review?'<div class="rev">“'+esc(b.review)+'”</div>':'')+'</div>';
+}
+function progressHTML(m,rank,link){
+  const c=count(m.n),p=pct(m),w=Math.min(100,p);
+  return '<div class="card"'+(link?' data-go="'+m.n+'" style="cursor:pointer"':'')+'><div class="top"><span class="name">'+
+    (rank?'<span class="rank">'+rank+'</span>':'')+esc(m.n)+(c>=m.goal?' 🎉':'')+'</span><span class="cnt"><b>'+c+'</b> / '+m.goal+'권</span></div>'+
+    '<div class="bar"><i style="width:'+w+'%;background:'+m.c+'"></i></div><div class="pct"><span>'+p+'% 달성</span><span>'+(c>=m.goal?'목표 달성!':'남은 '+(m.goal-c)+'권')+'</span></div></div>';
+}
+function render(){
+  if(!memberName)return;
+  $("tabs").hidden=false;$("fab").hidden=tab!==memberName;
+  $("tabs").innerHTML=['all',...MEMBERS.map(m=>m.n)].map(t=>'<button type="button" class="chip'+(tab===t?' on':'')+'" data-tab="'+t+'">'+(t==='all'?'전체':t+'의 책장')+'</button>').join('');
+  if(tab==='all'){
+    const rank=[...MEMBERS].sort((a,b)=>pct(b)-pct(a)||count(b.n)-count(a.n));
+    let h='<div class="lbl">목표 달성률 순위</div>'+rank.map((m,i)=>progressHTML(m,i+1,true)).join('');
+    const recent=books.slice(0,12);
+    h+='<div class="lbl">최근 기록</div>'+(recent.length?'<div class="card">'+recent.map(b=>bookHTML(b,true)).join('')+'</div>':'<div class="empty">아직 기록된 책이 없습니다. 내 책장에서 첫 책을 등록해보세요.</div>');
+    $("main").innerHTML=h;
+  }else{
+    const m=who(tab),arr=books.filter(b=>b.who===tab);
+    $("main").innerHTML=progressHTML(m,null,false)+
+      (tab!==memberName?'<div class="lbl">다른 가족의 책은 열람만 가능합니다.</div>':'<div class="lbl">내 독서 기록</div>')+
+      (arr.length?'<div class="card">'+arr.map(b=>bookHTML(b,false)).join('')+'</div>':'<div class="empty">아직 읽은 책이 없습니다.</div>');
+  }
+}
+function allowMember(name,db){
+  if(memberName===name && unsubBooks)return;
+  if(unsubBooks){unsubBooks();unsubBooks=null;}
+  memberName=name;books=[];tab=name;
+  $("setup").hidden=true;status(name+'의 기기 · 자동 연결됨');
+  $("main").innerHTML='<div class="empty">가족 책장을 불러오는 중…</div>';
+  unsubBooks=onSnapshot(collection(db,'books'),snapshot=>{
+    books=snapshot.docs.map(x=>({...x.data(),id:x.id})).sort((a,b)=>String(b.date||'').localeCompare(String(a.date||''))||(b.ts||0)-(a.ts||0));
+    render();
+  },err=>{
+    $("fab").hidden=true;
+    $("main").innerHTML='<div class="empty">책장을 불러오지 못했습니다. '+esc(err.code||err.message)+'</div>';
+  });
+}
+
+$("copyId").onclick=async()=>{
+  if(!deviceUid)return;
+  try{await navigator.clipboard.writeText(deviceUid);toast('기기 ID를 복사했습니다.');}
+  catch{toast('복사가 어려우면 위 ID를 길게 눌러 복사하세요.');}
+};
+$("fab").onclick=()=>{
+  if(!memberName)return;
+  editId="";$("fh").textContent=memberName+'의 책 기록하기';
+  $("ftitle").value="";$("frate").value="";$("frev").value="";$("fdate").value=today();drawRate();
+  $("ov").classList.add("show");
+};
+function drawRate(){const v=Math.max(0,Math.min(5,parseFloat($("frate").value)||0));$("fst").innerHTML=stars(v);}
+$("frate").addEventListener("input",drawRate);
+$("cancel").onclick=()=>$("ov").classList.remove("show");
+function openEdit(id){
+  const b=books.find(x=>x.id===id);
+  if(!b||b.who!==memberName)return;
+  editId=id;$("fh").textContent=memberName+'의 책 수정하기';
+  $("ftitle").value=b.title||"";$("frate").value=b.rating;$("fdate").value=b.date||today();$("frev").value=b.review||"";
+  drawRate();$("ov").classList.add("show");
+}
+document.addEventListener('click',async e=>{
+  const el=e.target.closest('[data-tab],[data-go],[data-ed],[data-del]');
+  if(!el||!memberName)return;
+  if(el.dataset.ed){openEdit(el.dataset.ed);return;}
+  if(el.dataset.del){
+    const b=books.find(x=>x.id===el.dataset.del);
+    if(!b||b.who!==memberName)return;
+    if(!confirm('「'+b.title+'」 기록을 삭제할까요?'))return;
+    try{el.disabled=true;await deleteDoc(doc(db,'books',b.id));toast('기록을 삭제했습니다.');}
+    catch(err){toast('삭제 실패: '+(err.code||err.message));el.disabled=false;}
+    return;
+  }
+  if(el.dataset.tab){tab=el.dataset.tab;render();return;}
+  if(el.dataset.go){tab=el.dataset.go;render();window.scrollTo(0,0);}
+});
+$("save").onclick=async()=>{
+  const title=$("ftitle").value.trim(),rating=Number($("frate").value),rateRaw=$("frate").value.trim();
+  const date=$("fdate").value,review=$("frev").value.trim();
+  if(!memberName)return toast('먼저 기기를 승인해주세요.');
+  if(!title)return toast('책 제목을 입력해주세요.');
+  if(!rateRaw||!Number.isFinite(rating)||rating<0||rating>5||Math.abs(rating*10-Math.round(rating*10))>0.000001)return toast('별점은 0~5 사이에서 0.1점 단위로 입력해주세요.');
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(date))return toast('완독일을 선택해주세요.');
+  const value={who:memberName,title,rating:Math.round(rating*10)/10,date,review};
+  const btn=$("save");btn.disabled=true;
+  try{
+    if(editId)await updateDoc(doc(db,'books',editId),value);
+    else await addDoc(collection(db,'books'),{...value,ts:Date.now()});
+    $("ov").classList.remove("show");tab=memberName;render();toast(editId?'수정했습니다.':'기록했습니다.');
+  }catch(err){toast('저장 실패: '+(err.code||err.message));}
+  finally{btn.disabled=false;}
+};
+
+const app=initializeApp(firebaseConfig);
+const auth=getAuth(app);
+const db=getFirestore(app);
+async function connect(){
+  try{
+    await auth.authStateReady();
+    if(auth.currentUser&&!auth.currentUser.isAnonymous){
+      // 이전 버전에서 구글로 로그인했다면 익명 인증으로 전환
+      await signOut(auth);
+    }
+    const u=auth.currentUser||(await signInAnonymously(auth)).user;
+    deviceUid=u.uid;
+    status('기기 승인 상태를 확인하는 중…');
+    blockUI('기기 등록 여부를 확인 중입니다.');
+    onSnapshot(doc(db,'familyDevices',u.uid),snapshot=>{
+      if(!snapshot.exists()){
+        status('기기 등록 대기 중');
+        blockUI('이 휴대폰을 최초 1회 승인하면 다음부터 로그인 없이 이용할 수 있습니다.');
+        return;
+      }
+      const name=snapshot.data().member;
+      if(!who(name)){
+        status('기기 등록 정보 확인 필요');
+        blockUI('Firebase 문서의 member 필드가 다예·다인·금련·만식 중 하나인지 확인해주세요.','등록 정보 오류');
+        return;
+      }
+      allowMember(name,db);
+    },err=>{
+      status('Firebase 권한 설정 확인 필요');
+      blockUI('기기 등록 정보를 읽을 수 없습니다. 새로운 Firestore 보안 규칙을 게시했는지 확인해주세요. 오류: '+(err.code||err.message),'보안 규칙 확인 필요');
+    });
+  }catch(err){
+    const code=err.code||err.message;
+    status('자동 연결에 실패했습니다.');
+    let msg='기기 인증에 실패했습니다. 오류: '+code;
+    if(code==='auth/operation-not-allowed'||code==='auth/admin-restricted-operation')msg='Firebase Authentication → 로그인 방법에서 익명(Anonymous)을 활성화해주세요.';
+    blockUI(msg,'Firebase 설정 필요');
+  }
+}
+connect();
+</script>
+</body>
+</html>
